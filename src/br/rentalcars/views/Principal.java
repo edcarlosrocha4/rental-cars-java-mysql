@@ -5,6 +5,10 @@
  */
 package br.rentalcars.views;
 
+import java.text.DateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author alefsilva
@@ -28,23 +32,32 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jdpDesktop = new javax.swing.JDesktopPane();
+        lbUsuario = new javax.swing.JLabel();
+        lbData = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         newCliente = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        MenCadCliente = new javax.swing.JMenuItem();
+        MenCadVeiculo = new javax.swing.JMenuItem();
+        MenCadUsuario = new javax.swing.JMenuItem();
+        MenCadAlugar = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        MenConsulTodosUsuarios = new javax.swing.JMenu();
+        MenCadTodosClientes = new javax.swing.JMenuItem();
+        MenConsulClientes = new javax.swing.JMenuItem();
+        MenConsulTodosVeiculos = new javax.swing.JMenuItem();
+        MenTodasLocacoes = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        MenTodasNotas = new javax.swing.JMenuItem();
+        MenBtnExit = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Rental Sytem - Painel de Controle");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jdpDesktop.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jdpDesktop.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -53,12 +66,18 @@ public class Principal extends javax.swing.JFrame {
         jdpDesktop.setLayout(jdpDesktopLayout);
         jdpDesktopLayout.setHorizontalGroup(
             jdpDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 715, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
         jdpDesktopLayout.setVerticalGroup(
             jdpDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 432, Short.MAX_VALUE)
         );
+
+        lbUsuario.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
+        lbUsuario.setText("Usuário");
+
+        lbData.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
+        lbData.setText("Data");
 
         newCliente.setText("CADASTRAR");
         newCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -67,99 +86,111 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem1.setText("CLIENTE");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        MenCadCliente.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        MenCadCliente.setText("CLIENTE");
+        MenCadCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                MenCadClienteActionPerformed(evt);
             }
         });
-        newCliente.add(jMenuItem1);
+        newCliente.add(MenCadCliente);
 
-        jMenuItem2.setText("VEICULO");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        MenCadVeiculo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
+        MenCadVeiculo.setText("VEICULO");
+        MenCadVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                MenCadVeiculoActionPerformed(evt);
             }
         });
-        newCliente.add(jMenuItem2);
+        newCliente.add(MenCadVeiculo);
 
-        jMenuItem3.setText("USUÁRIO");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        MenCadUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
+        MenCadUsuario.setText("USUÁRIO");
+        MenCadUsuario.setEnabled(false);
+        MenCadUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                MenCadUsuarioActionPerformed(evt);
             }
         });
-        newCliente.add(jMenuItem3);
+        newCliente.add(MenCadUsuario);
 
         jMenuBar1.add(newCliente);
 
-        jMenu3.setText("ALUGAR");
+        MenCadAlugar.setText("ALUGAR");
 
+        jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem9.setText("VEICULO");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        MenCadAlugar.add(jMenuItem9);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(MenCadAlugar);
 
-        jMenu2.setText("CONSULTAR");
+        MenConsulTodosUsuarios.setText("CONSULTAR");
 
-        jMenuItem7.setText("TODOS USUARIOS");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        MenCadTodosClientes.setText("TODOS USUARIOS");
+        MenCadTodosClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                MenCadTodosClientesActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem7);
+        MenConsulTodosUsuarios.add(MenCadTodosClientes);
 
-        jMenuItem4.setText("TODOS CLIENTES");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        MenConsulClientes.setText("TODOS CLIENTES");
+        MenConsulClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                MenConsulClientesActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        MenConsulTodosUsuarios.add(MenConsulClientes);
 
-        jMenuItem5.setText("TODOS VEICULOS");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        MenConsulTodosVeiculos.setText("TODOS VEICULOS");
+        MenConsulTodosVeiculos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                MenConsulTodosVeiculosActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        MenConsulTodosUsuarios.add(MenConsulTodosVeiculos);
 
-        jMenuItem11.setText("TODAS RESERVAS");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem11);
+        jMenuBar1.add(MenConsulTodosUsuarios);
 
-        jMenuBar1.add(jMenu2);
-
-        jMenu4.setText("RELÁTORIOS");
+        MenTodasLocacoes.setText("RELÁTORIOS");
 
         jMenuItem10.setText("LOCAÇÕES");
+        jMenuItem10.setEnabled(false);
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem10);
+        MenTodasLocacoes.add(jMenuItem10);
 
-        jMenuItem8.setText("NOTAS FISCAIS");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        MenTodasNotas.setText("NOTAS FISCAIS");
+        MenTodasNotas.setEnabled(false);
+        MenTodasNotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                MenTodasNotasActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem8);
+        MenTodasLocacoes.add(MenTodasNotas);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(MenTodasLocacoes);
+
+        MenBtnExit.setText("OPÇÕES");
+
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem6.setText("Sair");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        MenBtnExit.add(jMenuItem6);
+
+        jMenuBar1.add(MenBtnExit);
 
         setJMenuBar(jMenuBar1);
 
@@ -167,47 +198,55 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 729, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jdpDesktop)
-                    .addContainerGap()))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jdpDesktop)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbData)
+                            .addComponent(lbUsuario))
+                        .addGap(118, 118, 118))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 489, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(49, Short.MAX_VALUE)
-                    .addComponent(jdpDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbData)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                .addComponent(jdpDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void MenCadClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadClienteActionPerformed
         // TODO add your handling code here:
         Cliente TelaCliente = new Cliente();
         jdpDesktop.add(TelaCliente);
         TelaCliente.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MenCadClienteActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void MenCadVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadVeiculoActionPerformed
         // TODO add your handling code here:
         Veiculo TelaVeiculo = new Veiculo();
         jdpDesktop.add(TelaVeiculo);
         TelaVeiculo.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_MenCadVeiculoActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void MenCadUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadUsuarioActionPerformed
         // TODO add your handling code here:
         Usuario TelaUsuario = new Usuario();
         jdpDesktop.add(TelaUsuario);
         TelaUsuario.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_MenCadUsuarioActionPerformed
 
     private void newClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newClienteActionPerformed
         // TODO add your handling code here:
@@ -220,33 +259,26 @@ public class Principal extends javax.swing.JFrame {
         TelaAlugaVeiculo.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void MenCadTodosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadTodosClientesActionPerformed
         // TODO add your handling code here:
         TodosUsuarios TelaTodosUsuarios = new TodosUsuarios();
         jdpDesktop.add(TelaTodosUsuarios);
         TelaTodosUsuarios.setVisible(true);
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_MenCadTodosClientesActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void MenConsulClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenConsulClientesActionPerformed
         // TODO add your handling code here:
         TodosClientes TelaTodosClientes = new TodosClientes();
         jdpDesktop.add(TelaTodosClientes);
         TelaTodosClientes.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_MenConsulClientesActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void MenConsulTodosVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenConsulTodosVeiculosActionPerformed
         // TODO add your handling code here:
         TodosVeiculos TelaTodosVeiculos = new TodosVeiculos();
         jdpDesktop.add(TelaTodosVeiculos);
         TelaTodosVeiculos.setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
-        TodasReservas TelaTTodasReservas = new TodasReservas();
-        jdpDesktop.add(TelaTTodasReservas);
-        TelaTTodasReservas.setVisible(true);
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
+    }//GEN-LAST:event_MenConsulTodosVeiculosActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
@@ -255,12 +287,33 @@ public class Principal extends javax.swing.JFrame {
         TelaTodasLocacoes.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+    private void MenTodasNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenTodasNotasActionPerformed
         // TODO add your handling code here:
         TodasNotas TelaTodasNotas = new TodasNotas();
         jdpDesktop.add(TelaTodasNotas);
         TelaTodasNotas.setVisible(true);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_MenTodasNotasActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        // Exibir uma confirmação de fechar o sistema
+        int sair = JOptionPane.showConfirmDialog(null,"Tem certeza que deseja sair ?","Atenção",JOptionPane.YES_NO_OPTION);
+        
+        if(sair == JOptionPane.YES_OPTION)
+        {
+            System.exit(0);
+        }
+        
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // Substituir Lable Data  ldData por data atual do sistema ao inicializar a tela.
+        Date data = new Date();
+        DateFormat formatada = DateFormat.getDateInstance(DateFormat.SHORT);
+        lbData.setText(formatada.format(data));
+        
+        
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -299,21 +352,24 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu MenBtnExit;
+    private javax.swing.JMenu MenCadAlugar;
+    private javax.swing.JMenuItem MenCadCliente;
+    private javax.swing.JMenuItem MenCadTodosClientes;
+    public static javax.swing.JMenuItem MenCadUsuario;
+    private javax.swing.JMenuItem MenCadVeiculo;
+    private javax.swing.JMenuItem MenConsulClientes;
+    private javax.swing.JMenu MenConsulTodosUsuarios;
+    private javax.swing.JMenuItem MenConsulTodosVeiculos;
+    private javax.swing.JMenu MenTodasLocacoes;
+    public static javax.swing.JMenuItem MenTodasNotas;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
+    public static javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JDesktopPane jdpDesktop;
+    private javax.swing.JLabel lbData;
+    private javax.swing.JLabel lbUsuario;
     private javax.swing.JMenu newCliente;
     // End of variables declaration//GEN-END:variables
 }
