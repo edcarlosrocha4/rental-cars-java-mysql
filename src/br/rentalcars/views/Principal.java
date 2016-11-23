@@ -160,7 +160,6 @@ public class Principal extends javax.swing.JFrame {
         MenTodasLocacoes.setText("RELÁTORIOS");
 
         jMenuItem10.setText("LOCAÇÕES");
-        jMenuItem10.setEnabled(false);
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
@@ -169,7 +168,6 @@ public class Principal extends javax.swing.JFrame {
         MenTodasLocacoes.add(jMenuItem10);
 
         MenTodasNotas.setText("NOTAS FISCAIS");
-        MenTodasNotas.setEnabled(false);
         MenTodasNotas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenTodasNotasActionPerformed(evt);

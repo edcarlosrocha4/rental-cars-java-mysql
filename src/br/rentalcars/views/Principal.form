@@ -108,7 +108,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem10">
               <Properties>
                 <Property name="text" type="java.lang.String" value="LOCA&#xc7;&#xd5;ES"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem10ActionPerformed"/>
@@ -120,7 +119,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="MenTodasNotas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="NOTAS FISCAIS"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenTodasNotasActionPerformed"/>

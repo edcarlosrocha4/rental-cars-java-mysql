@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet result = null;
-    
+
     public void logar() {
 
         String sql = "SELECT * FROM users WHERE username=? and password=?";
@@ -32,11 +32,19 @@ public class Login extends javax.swing.JFrame {
 
             // se existir usuario cadastrados com esses dados ira abrir tela de principal
             if (result.next()) {
-                // instanciar um objeto com a tela principal e colocar para abrir
-                Principal Telaprincipal = new Principal();
-                Telaprincipal.setVisible(true);
-                  // fechando form de login e senha 
+                // capturando tipo de perfil de Usuario
+                // 5 indica possição do campo na tabela do banco 
+                String perfil = result.getString(5);
+
+                Principal TelaPrincipal = new Principal();
+                TelaPrincipal.setVisible(true);
+                // fechando form de login e senha 
                 this.dispose();
+                // condição para tratamento do perfil do usuario
+                if (perfil.equals("admin")) {
+                    // instanciar um objeto com a tela principal e colocar para abrir
+                    Principal.MenCadUsuario.setEnabled(true);
+                }
                 // fechando conexção com o banco de dados
                 conn.close();
 
@@ -49,8 +57,8 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-     /**
+
+    /**
      * Creates new form Login
      */
     public Login() {
@@ -98,6 +106,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         jButton2.setText("Sair");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         lbStatus.setText("STATUS");
 
@@ -171,6 +184,16 @@ public class Login extends javax.swing.JFrame {
         logar();
 
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // Exibir uma confirmação de fechar o sistema
+        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (sair == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
