@@ -32,7 +32,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                 TxtNome.setText(result.getString(2));
                 TxtEmail.setText(result.getString(3));
                 txtNasc.setText(result.getString(4)); 
-                //txtSexo.setText(result.getString(5)); 
+                cbSexo.setSelectedItem(result.getString(5));
                 TxtCpf.setText(result.getString(6));
                 TxtRg.setText(result.getString(7));
                 TxtCelular.setText(result.getString(8));
@@ -41,10 +41,23 @@ public class Cliente extends javax.swing.JInternalFrame {
                 TxtCidade.setText(result.getString(11));
                 TxtCep.setText(result.getString(12));
                 TxtNumero.setText(result.getString(13));
-                //TxtUF.setText(result.getString(14));
+                cbUf.setSelectedItem(result.getString(14));
+                
             } else {
                 
-                
+                JOptionPane.showMessageDialog(null,"Cliente não encontrado :C ");
+                TxtNome.setText(null);
+                TxtEmail.setText(null);
+                txtNasc.setText(null); 
+                cbSexo.setSelectedItem(null);
+                TxtCpf.setText(null);
+                TxtRg.setText(null);
+                TxtCelular.setText(null);
+                TxtTelefone.setText(null);         
+                TxtRua.setText(null);
+                TxtCidade.setText(null);
+                TxtCep.setText(null);
+                TxtNumero.setText(null);              
                 
             }
         } catch (Exception e) {
@@ -54,6 +67,25 @@ public class Cliente extends javax.swing.JInternalFrame {
 
     }
     
+    private void limpar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja Limpar Todos os Campos ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (opc == JOptionPane.YES_OPTION) {
+             TxtNome.setText(null);
+                TxtEmail.setText(null);
+                txtNasc.setText(null); 
+                cbSexo.setSelectedItem(null);
+                TxtCpf.setText(null);
+                TxtRg.setText(null);
+                TxtCelular.setText(null);
+                TxtTelefone.setText(null);         
+                TxtRua.setText(null);
+                TxtCidade.setText(null);
+                TxtCep.setText(null);
+                TxtNumero.setText(null);
+        }
+               
+    }
     
     /**
      * Creates new form Cliente
@@ -191,6 +223,11 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         btLimparCamposCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btLimparCamposCliente.setToolTipText("Limpar Campos");
+        btLimparCamposCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimparCamposClienteActionPerformed(evt);
+            }
+        });
 
         cbUf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PR", "PB", "PA", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "SP", "TO" }));
 
@@ -406,6 +443,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         consultar();
     }//GEN-LAST:event_btnPesqCliActionPerformed
+
+    private void btLimparCamposClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparCamposClienteActionPerformed
+        // TODO add your handling code here:
+        limpar();
+    }//GEN-LAST:event_btLimparCamposClienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

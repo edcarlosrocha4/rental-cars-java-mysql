@@ -42,16 +42,35 @@ public class Usuario extends javax.swing.JInternalFrame {
                 txtEmailUsuario.setText(result.getString(5));
                 txtLoginUsuario.setText(result.getString(2));
                 txtPasswordUsuario.setText(result.getString(3));
-                //cbPerfilUsuario.setText(result.getString(4));
+                cbPerfilUsuario.setSelectedItem(result.getString(6));
                 
                 
             } else {
+                
+                JOptionPane.showMessageDialog(null,"Usuario não encontrado :C ");
+                txtNomeUsuario.setText(null);
+                txtEmailUsuario.setText(null);
+                txtLoginUsuario.setText(null);
+                txtPasswordUsuario.setText(null);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
 
+    }
+    
+    private void limpar(){
+        
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja Limpar Todos os Campos ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (opc == JOptionPane.YES_OPTION) {
+                txtNomeUsuario.setText(null);
+                txtEmailUsuario.setText(null);
+                txtLoginUsuario.setText(null);
+                txtPasswordUsuario.setText(null);
+        }
+        
     }
 
     /**
@@ -156,6 +175,11 @@ public class Usuario extends javax.swing.JInternalFrame {
         btnLimparUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btnLimparUsuario.setToolTipText("Limpar Campos");
         btnLimparUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLimparUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -282,6 +306,11 @@ public class Usuario extends javax.swing.JInternalFrame {
     private void btnPesqUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqUsuarioActionPerformed
       consultar();
     }//GEN-LAST:event_btnPesqUsuarioActionPerformed
+
+    private void btnLimparUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparUsuarioActionPerformed
+        // TODO add your handling code here:
+        limpar();
+    }//GEN-LAST:event_btnLimparUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

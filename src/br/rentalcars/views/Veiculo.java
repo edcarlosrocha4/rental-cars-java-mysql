@@ -31,19 +31,35 @@ public class Veiculo extends javax.swing.JInternalFrame {
                 txtMontadora.setText(result.getString(2));
                 txtModelo.setText(result.getString(3));
                 txtPlaca.setText(result.getString(4));
-                //cbCombustivel.setText(result.getString(5));
+                cbCombustivel.setSelectedItem(result.getString(5));
                 txtCor.setText(result.getString(6));
                 txtAnoFab.setText(result.getString(7));
                 txtAnoModel.setText(result.getString(8));
                 txtValorDia.setText(result.getString(9));                
                 
             } else {
+                JOptionPane.showMessageDialog(null,"Veiculo não encontrado :C ");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
 
+    }
+    
+    private void limpar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja Limpar Todos os Campos ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (opc == JOptionPane.YES_OPTION) {
+                txtMontadora.setText(null);
+                txtModelo.setText(null);
+                txtPlaca.setText(null);
+                txtCor.setText(null);
+                txtAnoFab.setText(null);
+                txtAnoModel.setText(null);
+                txtValorDia.setText(null); 
+        }
+    
     }
     
     /**
@@ -175,6 +191,11 @@ public class Veiculo extends javax.swing.JInternalFrame {
         btLimparCamposVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btLimparCamposVeiculos.setToolTipText("Limpar Campos");
         btLimparCamposVeiculos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btLimparCamposVeiculos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLimparCamposVeiculosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,7 +285,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIdVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
@@ -334,6 +355,11 @@ public class Veiculo extends javax.swing.JInternalFrame {
     private void btnPesqVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqVeiculoActionPerformed
         consultar();
     }//GEN-LAST:event_btnPesqVeiculoActionPerformed
+
+    private void btLimparCamposVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparCamposVeiculosActionPerformed
+        // TODO add your handling code here:
+        limpar();
+    }//GEN-LAST:event_btLimparCamposVeiculosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
