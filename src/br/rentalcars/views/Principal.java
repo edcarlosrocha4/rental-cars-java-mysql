@@ -8,6 +8,7 @@ package br.rentalcars.views;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import java.beans.*;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Principal extends javax.swing.JFrame {
         jdpDesktop = new javax.swing.JDesktopPane();
         lbUsuario = new javax.swing.JLabel();
         lbData = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         newCliente = new javax.swing.JMenu();
         MenCadCliente = new javax.swing.JMenuItem();
@@ -41,12 +43,7 @@ public class Principal extends javax.swing.JFrame {
         MenCadUsuario = new javax.swing.JMenuItem();
         MenCadAlugar = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
-        MenConsulTodosUsuarios = new javax.swing.JMenu();
-        MenCadTodosClientes = new javax.swing.JMenuItem();
-        MenConsulClientes = new javax.swing.JMenuItem();
-        MenConsulTodosVeiculos = new javax.swing.JMenuItem();
         MenTodasLocacoes = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
         MenTodasNotas = new javax.swing.JMenuItem();
         MenBtnExit = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -61,16 +58,17 @@ public class Principal extends javax.swing.JFrame {
 
         jdpDesktop.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jdpDesktop.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jdpDesktop.setPreferredSize(new java.awt.Dimension(1000, 548));
 
         javax.swing.GroupLayout jdpDesktopLayout = new javax.swing.GroupLayout(jdpDesktop);
         jdpDesktop.setLayout(jdpDesktopLayout);
         jdpDesktopLayout.setHorizontalGroup(
             jdpDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 696, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jdpDesktopLayout.setVerticalGroup(
             jdpDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
+            .addGap(0, 546, Short.MAX_VALUE)
         );
 
         lbUsuario.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
@@ -79,7 +77,9 @@ public class Principal extends javax.swing.JFrame {
         lbData.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         lbData.setText("Data");
 
-        newCliente.setText("CADASTRAR");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/banners/5cars-512x192.png"))); // NOI18N
+
+        newCliente.setText("MENU");
         newCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newClienteActionPerformed(evt);
@@ -129,43 +129,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(MenCadAlugar);
 
-        MenConsulTodosUsuarios.setText("CONSULTAR");
-
-        MenCadTodosClientes.setText("TODOS USUARIOS");
-        MenCadTodosClientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenCadTodosClientesActionPerformed(evt);
-            }
-        });
-        MenConsulTodosUsuarios.add(MenCadTodosClientes);
-
-        MenConsulClientes.setText("TODOS CLIENTES");
-        MenConsulClientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenConsulClientesActionPerformed(evt);
-            }
-        });
-        MenConsulTodosUsuarios.add(MenConsulClientes);
-
-        MenConsulTodosVeiculos.setText("TODOS VEICULOS");
-        MenConsulTodosVeiculos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenConsulTodosVeiculosActionPerformed(evt);
-            }
-        });
-        MenConsulTodosUsuarios.add(MenConsulTodosVeiculos);
-
-        jMenuBar1.add(MenConsulTodosUsuarios);
-
         MenTodasLocacoes.setText("RELÁTORIOS");
-
-        jMenuItem10.setText("LOCAÇÕES");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        MenTodasLocacoes.add(jMenuItem10);
 
         MenTodasNotas.setText("NOTAS FISCAIS");
         MenTodasNotas.addActionListener(new java.awt.event.ActionListener() {
@@ -197,27 +161,29 @@ public class Principal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jdpDesktop)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbData)
-                            .addComponent(lbUsuario))
-                        .addGap(118, 118, 118))))
+                .addGap(247, 247, 247)
+                .addComponent(jLabel1)
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbUsuario)
+                    .addComponent(lbData))
+                .addContainerGap(97, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbData)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
-                .addComponent(jdpDesktop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbData))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -256,34 +222,6 @@ public class Principal extends javax.swing.JFrame {
         jdpDesktop.add(TelaAlugaVeiculo);
         TelaAlugaVeiculo.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void MenCadTodosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenCadTodosClientesActionPerformed
-        // TODO add your handling code here:
-        TodosUsuarios TelaTodosUsuarios = new TodosUsuarios();
-        jdpDesktop.add(TelaTodosUsuarios);
-        TelaTodosUsuarios.setVisible(true);
-    }//GEN-LAST:event_MenCadTodosClientesActionPerformed
-
-    private void MenConsulClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenConsulClientesActionPerformed
-        // TODO add your handling code here:
-        TodosClientes TelaTodosClientes = new TodosClientes();
-        jdpDesktop.add(TelaTodosClientes);
-        TelaTodosClientes.setVisible(true);
-    }//GEN-LAST:event_MenConsulClientesActionPerformed
-
-    private void MenConsulTodosVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenConsulTodosVeiculosActionPerformed
-        // TODO add your handling code here:
-        TodosVeiculos TelaTodosVeiculos = new TodosVeiculos();
-        jdpDesktop.add(TelaTodosVeiculos);
-        TelaTodosVeiculos.setVisible(true);
-    }//GEN-LAST:event_MenConsulTodosVeiculosActionPerformed
-
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
-        TodasLocacoes TelaTodasLocacoes = new TodasLocacoes();
-        jdpDesktop.add(TelaTodasLocacoes);
-        TelaTodasLocacoes.setVisible(true);
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void MenTodasNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenTodasNotasActionPerformed
         // TODO add your handling code here:
@@ -353,16 +291,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu MenBtnExit;
     private javax.swing.JMenu MenCadAlugar;
     private javax.swing.JMenuItem MenCadCliente;
-    private javax.swing.JMenuItem MenCadTodosClientes;
     public static javax.swing.JMenuItem MenCadUsuario;
     private javax.swing.JMenuItem MenCadVeiculo;
-    private javax.swing.JMenuItem MenConsulClientes;
-    private javax.swing.JMenu MenConsulTodosUsuarios;
-    private javax.swing.JMenuItem MenConsulTodosVeiculos;
     private javax.swing.JMenu MenTodasLocacoes;
     public static javax.swing.JMenuItem MenTodasNotas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
-    public static javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JDesktopPane jdpDesktop;

@@ -38,6 +38,7 @@ public class TodasNotas extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Lista de Notas Fiscais");
+        setPreferredSize(new java.awt.Dimension(1000, 550));
 
         tbNota.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -34,7 +34,7 @@ public class Login extends javax.swing.JFrame {
             if (result.next()) {
                 // capturando tipo de perfil de Usuario
                 // 5 indica possição do campo na tabela do banco 
-                String perfil = result.getString(5);
+                String perfil = result.getString(6);
 
                 Principal TelaPrincipal = new Principal();
                 TelaPrincipal.setVisible(true);
@@ -94,7 +94,7 @@ public class Login extends javax.swing.JFrame {
         setTitle("Rental System - Login");
         setResizable(false);
 
-        lbusername.setText("USUÁRIO");
+        lbusername.setText("LOGIN");
 
         lbPassword.setText("SENHA");
 
