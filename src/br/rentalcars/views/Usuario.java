@@ -35,7 +35,7 @@ public class Usuario extends javax.swing.JInternalFrame {
         String sql = "SELECT * FROM users WHERE id=?";
         try {
             pst = conn.prepareStatement(sql);
-            pst.setString(1,txtIdUsuario.getText());
+            pst.setString(1, txtIdUsuario.getText());
             result = pst.executeQuery();
             if (result.next()) {
                 txtNomeUsuario.setText(result.getString(4));
@@ -43,11 +43,10 @@ public class Usuario extends javax.swing.JInternalFrame {
                 txtLoginUsuario.setText(result.getString(2));
                 txtPasswordUsuario.setText(result.getString(3));
                 cbPerfilUsuario.setSelectedItem(result.getString(6));
-                
-                
+
             } else {
-                
-                JOptionPane.showMessageDialog(null,"Usuario não encontrado :C ");
+
+                JOptionPane.showMessageDialog(null, "Usuario não encontrado :C ");
                 txtNomeUsuario.setText(null);
                 txtEmailUsuario.setText(null);
                 txtLoginUsuario.setText(null);
@@ -59,18 +58,51 @@ public class Usuario extends javax.swing.JInternalFrame {
         }
 
     }
-    
-    private void limpar(){
-        
+
+    private void limpar() {
+
         int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja Limpar Todos os Campos ?", "Atenção", JOptionPane.YES_NO_OPTION);
 
         if (opc == JOptionPane.YES_OPTION) {
-                txtNomeUsuario.setText(null);
-                txtEmailUsuario.setText(null);
-                txtLoginUsuario.setText(null);
-                txtPasswordUsuario.setText(null);
+            txtNomeUsuario.setText(null);
+            txtEmailUsuario.setText(null);
+            txtLoginUsuario.setText(null);
+            txtPasswordUsuario.setText(null);
+            txtIdUsuario.setText(null);
         }
-        
+
+    }
+
+    private void adicionar() {
+
+        String sql = "INSERT INTO users (id,username,password,nome,email,perfil) VALUES (?,?,?,?,?,?);";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtIdUsuario.getText());
+            pst.setString(2, txtLoginUsuario.getText());
+            pst.setString(3, txtPasswordUsuario.getText());
+            pst.setString(4, txtNomeUsuario.getText());
+            pst.setString(5, txtEmailUsuario.getText());
+            pst.setString(6, cbPerfilUsuario.getSelectedItem().toString());
+            if (txtNomeUsuario.getText().isEmpty() || txtEmailUsuario.getText().isEmpty() || txtLoginUsuario.getText().isEmpty() || txtPasswordUsuario.getText().isEmpty() ) {
+                int add = pst.executeUpdate();
+                if (add > 0) {
+                    JOptionPane.showMessageDialog(null, "Todos os dados foi cadastrado com sucesso");
+                    txtNomeUsuario.setText(null);
+                    txtEmailUsuario.setText(null);
+                    txtLoginUsuario.setText(null);
+                    txtPasswordUsuario.setText(null);
+                    txtIdUsuario.setText(null);
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");                    
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+
     }
 
     /**
@@ -301,10 +333,11 @@ public class Usuario extends javax.swing.JInternalFrame {
 
     private void btnAddUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUsuarioActionPerformed
         // TODO add your handling code here:
+        adicionar();
     }//GEN-LAST:event_btnAddUsuarioActionPerformed
 
     private void btnPesqUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqUsuarioActionPerformed
-      consultar();
+        consultar();
     }//GEN-LAST:event_btnPesqUsuarioActionPerformed
 
     private void btnLimparUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparUsuarioActionPerformed
