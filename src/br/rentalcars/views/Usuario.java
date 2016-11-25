@@ -7,7 +7,12 @@ package br.rentalcars.views;
 
 import java.sql.*;
 import br.rentalcars.dal.ModuleConnection;
+import static java.lang.reflect.Array.set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
+
 
 /**
  *
@@ -84,26 +89,87 @@ public class Usuario extends javax.swing.JInternalFrame {
             pst.setString(4, txtEmailUsuario.getText());
             pst.setString(5, cbPerfilUsuario.getSelectedItem().toString());
             if ((txtNomeUsuario.getText().isEmpty()) || (txtEmailUsuario.getText().isEmpty()) || (txtLoginUsuario.getText().isEmpty()) || (txtPasswordUsuario.getText().isEmpty())) {
-                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");                
+                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
 
             } else {
-                    int add = pst.executeUpdate();
+                int add = pst.executeUpdate();
                 if (add > 0) {
-                    JOptionPane.showMessageDialog(null, "Todos os dados foi cadastrado com sucesso");
+                    JOptionPane.showMessageDialog(null, "Usuário cadastrado com sucesso");
                     txtNomeUsuario.setText(null);
                     txtEmailUsuario.setText(null);
                     txtLoginUsuario.setText(null);
                     txtPasswordUsuario.setText(null);
                     txtIdUsuario.setText(null);
                 }
-                
-                
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
 
+    }
+
+    private void editar() {
+
+        String sql = "UPDATE users SET username=?,password=?,nome=?,email=?,perfil=? WHERE id=?;";
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtLoginUsuario.getText());
+            pst.setString(2, txtPasswordUsuario.getText());
+            pst.setString(3, txtNomeUsuario.getText());
+            pst.setString(4, txtEmailUsuario.getText());
+            pst.setString(5, cbPerfilUsuario.getSelectedItem().toString());
+            pst.setString(6, txtIdUsuario.getText());
+            if ((txtNomeUsuario.getText().isEmpty()) || (txtEmailUsuario.getText().isEmpty()) || (txtLoginUsuario.getText().isEmpty()) || (txtPasswordUsuario.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
+
+            } else {
+                int add = pst.executeUpdate();
+                if (add > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso");
+                    txtNomeUsuario.setText(null);
+                    txtEmailUsuario.setText(null);
+                    txtLoginUsuario.setText(null);
+                    txtPasswordUsuario.setText(null);
+                    txtIdUsuario.setText(null);
+                }
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+
+    }
+
+    private void consultarNome() throws SQLException {
+
+        String sql = "SELECT * FROM users WHERE nome LIKE ?;";
+        pst = conn.prepareStatement(sql);
+
+        try {
+            pst.setString(1, txtPesqUsuarioNome.getText() + "%");
+            result = pst.executeQuery();
+            // comando abaixo usa a biblioteca rs2xml.jar para preencher a tabela abaixo
+            tbUsuario.setModel(DbUtils.resultSetToTableModel(result));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+
+    }
+    
+    
+    private void setarCampos(){
+        
+        int set = tbUsuario.getSelectedRow();
+        txtNomeUsuario.setText(tbUsuario.getModel().getValueAt(set,1).toString());
+        txtEmailUsuario.setText(tbUsuario.getModel().getValueAt(set,2).toString());
+        txtLoginUsuario.setText(tbUsuario.getModel().getValueAt(set,3).toString());
+        txtPasswordUsuario.setText(tbUsuario.getModel().getValueAt(set,4).toString());
+        
+        
     }
 
     /**
@@ -126,7 +192,6 @@ public class Usuario extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUsuario = new javax.swing.JTable();
-        btnPesqUsuarioNome = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtLoginUsuario = new javax.swing.JTextField();
@@ -145,9 +210,6 @@ public class Usuario extends javax.swing.JInternalFrame {
         jLabel11.setFont(new java.awt.Font("DejaVu Serif", 2, 18)); // NOI18N
         jLabel11.setText("Novo Cliente");
 
-        setClosable(true);
-        setIconifiable(true);
-        setMaximizable(true);
         setTitle("Cadastro de Usuários");
         setPreferredSize(new java.awt.Dimension(1000, 550));
 
@@ -179,16 +241,12 @@ public class Usuario extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tbUsuario);
-
-        btnPesqUsuarioNome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698838-icon-111-search-32.png"))); // NOI18N
-        btnPesqUsuarioNome.setToolTipText("Pesquisar");
-        btnPesqUsuarioNome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPesqUsuarioNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPesqUsuarioNomeActionPerformed(evt);
+        tbUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUsuarioMouseClicked(evt);
             }
         });
+        jScrollPane1.setViewportView(tbUsuario);
 
         jLabel13.setFont(new java.awt.Font("DejaVu Serif", 2, 18)); // NOI18N
         jLabel13.setText("Usuários");
@@ -204,6 +262,11 @@ public class Usuario extends javax.swing.JInternalFrame {
         btnEditUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698873-icon-136-document-edit-32.png"))); // NOI18N
         btnEditUsuario.setToolTipText("Editar");
         btnEditUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditUsuarioActionPerformed(evt);
+            }
+        });
 
         btnDeleteUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
         btnDeleteUsuario.setToolTipText("Excluir");
@@ -221,6 +284,11 @@ public class Usuario extends javax.swing.JInternalFrame {
         txtPesqUsuarioNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPesqUsuarioNomeActionPerformed(evt);
+            }
+        });
+        txtPesqUsuarioNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPesqUsuarioNomeKeyReleased(evt);
             }
         });
 
@@ -266,29 +334,28 @@ public class Usuario extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(txtNomeUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(69, 69, 69)
-                                        .addComponent(jLabel9))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(32, 32, 32)
-                                                    .addComponent(jLabel7)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                    .addComponent(jLabel5)
-                                                    .addGap(20, 20, 20)))
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txtIdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(txtPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(btnPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(btnPesqUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtEmailUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtEmailUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(34, 34, 34)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(32, 32, 32)
+                                                        .addComponent(jLabel7)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addComponent(jLabel5)
+                                                        .addGap(20, 20, 20)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(txtPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(txtIdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(btnPesqUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
@@ -331,12 +398,7 @@ public class Usuario extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPasswordUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cbPerfilUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)))
+                            .addComponent(jLabel3)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -346,30 +408,38 @@ public class Usuario extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtEmailUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtIdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(cbPerfilUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAddUsuario)
-                                    .addComponent(btnEditUsuario)
-                                    .addComponent(btnDeleteUsuario)))
-                            .addComponent(btnLimparUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtPesqUsuarioNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))
+                                .addGap(4, 4, 4)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(txtIdUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnPesqUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnLimparUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnPesqUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddUsuario)
+                            .addComponent(btnEditUsuario)
+                            .addComponent(btnDeleteUsuario))))
                 .addGap(23, 23, 23))
         );
 
@@ -380,10 +450,6 @@ public class Usuario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         adicionar();
     }//GEN-LAST:event_btnAddUsuarioActionPerformed
-
-    private void btnPesqUsuarioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqUsuarioNomeActionPerformed
-        consultar();
-    }//GEN-LAST:event_btnPesqUsuarioNomeActionPerformed
 
     private void btnLimparUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparUsuarioActionPerformed
         // TODO add your handling code here:
@@ -398,6 +464,25 @@ public class Usuario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPesqUsuarioIdActionPerformed
 
+    private void btnEditUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditUsuarioActionPerformed
+        // TODO add your handling code here:
+        editar();
+    }//GEN-LAST:event_btnEditUsuarioActionPerformed
+
+    private void txtPesqUsuarioNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesqUsuarioNomeKeyReleased
+        try {
+            // TODO add your handling code here:
+            consultarNome();
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtPesqUsuarioNomeKeyReleased
+
+    private void tbUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUsuarioMouseClicked
+        // TODO add your handling code here:
+        setarCampos();
+    }//GEN-LAST:event_tbUsuarioMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUsuario;
@@ -405,7 +490,6 @@ public class Usuario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEditUsuario;
     private javax.swing.JButton btnLimparUsuario;
     private javax.swing.JButton btnPesqUsuarioId;
-    private javax.swing.JButton btnPesqUsuarioNome;
     private javax.swing.JComboBox<String> cbPerfilUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
