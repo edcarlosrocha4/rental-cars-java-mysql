@@ -100,6 +100,7 @@ public class Usuario extends javax.swing.JInternalFrame {
                     txtLoginUsuario.setText(null);
                     txtPasswordUsuario.setText(null);
                     txtIdUsuario.setText(null);
+                    btnAddUsuario.setEnabled(true);
                 }
 
             }
@@ -142,6 +143,33 @@ public class Usuario extends javax.swing.JInternalFrame {
         }
 
     }
+    
+    private void deletar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este usuario ?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if(opc == JOptionPane.YES_OPTION){
+            String sql = "DELETE FROM users WHERE id=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtIdUsuario.getText());
+                int deletado = pst.executeUpdate();
+                if (deletado > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuário removido com sucesso");
+                    txtNomeUsuario.setText(null);
+                    txtEmailUsuario.setText(null);
+                    txtLoginUsuario.setText(null);
+                    txtPasswordUsuario.setText(null);
+                    txtIdUsuario.setText(null);
+                    btnAddUsuario.setEnabled(true);
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "erro ao tentar remover usuário");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        
+    }
 
     private void consultarNome() throws SQLException {
 
@@ -164,10 +192,13 @@ public class Usuario extends javax.swing.JInternalFrame {
     private void setarCampos(){
         
         int set = tbUsuario.getSelectedRow();
+        txtIdUsuario.setText(tbUsuario.getModel().getValueAt(set, 0).toString());
         txtNomeUsuario.setText(tbUsuario.getModel().getValueAt(set,1).toString());
         txtEmailUsuario.setText(tbUsuario.getModel().getValueAt(set,2).toString());
         txtLoginUsuario.setText(tbUsuario.getModel().getValueAt(set,3).toString());
         txtPasswordUsuario.setText(tbUsuario.getModel().getValueAt(set,4).toString());
+        btnAddUsuario.setEnabled(false);
+        
         
         
     }
@@ -271,6 +302,11 @@ public class Usuario extends javax.swing.JInternalFrame {
         btnDeleteUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
         btnDeleteUsuario.setToolTipText("Excluir");
         btnDeleteUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDeleteUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteUsuarioActionPerformed(evt);
+            }
+        });
 
         btnLimparUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btnLimparUsuario.setToolTipText("Limpar Campos");
@@ -417,7 +453,7 @@ public class Usuario extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -430,17 +466,15 @@ public class Usuario extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnPesqUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnLimparUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAddUsuario)
-                            .addComponent(btnEditUsuario)
-                            .addComponent(btnDeleteUsuario))))
-                .addGap(23, 23, 23))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnAddUsuario)
+                        .addComponent(btnEditUsuario)
+                        .addComponent(btnDeleteUsuario)))
+                .addContainerGap())
         );
 
         pack();
@@ -482,6 +516,11 @@ public class Usuario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         setarCampos();
     }//GEN-LAST:event_tbUsuarioMouseClicked
+
+    private void btnDeleteUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteUsuarioActionPerformed
+        // TODO add your handling code here:
+        deletar();
+    }//GEN-LAST:event_btnDeleteUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

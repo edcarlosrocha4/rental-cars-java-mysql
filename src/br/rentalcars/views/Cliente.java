@@ -176,6 +176,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                     TxtCidade.setText(null);
                     TxtCep.setText(null);
                     TxtNumero.setText(null);
+                   btnCadastrarCli.setEnabled(true);
                 }
 
             }
@@ -184,6 +185,40 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         }
 
+    }
+    
+    private void deletar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este cliente ?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if(opc == JOptionPane.YES_OPTION){
+            String sql = "DELETE FROM clientes WHERE id=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtIdCliente.getText());
+                int deletado = pst.executeUpdate();
+                if (deletado > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente removido com sucesso");
+                    TxtNome.setText(null);
+                    TxtEmail.setText(null);
+                    txtNasc.setText(null);
+                    cbSexo.setSelectedItem(null);
+                    TxtCpf.setText(null);
+                    TxtRg.setText(null);
+                    TxtCelular.setText(null);
+                    TxtTelefone.setText(null);
+                    TxtRua.setText(null);
+                    TxtCidade.setText(null);
+                    TxtCep.setText(null);
+                    TxtNumero.setText(null);
+                   btnCadastrarCli.setEnabled(true);
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "erro ao tentar remover Cliente");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        
     }
 
     private void consultarNome() throws SQLException {
@@ -206,6 +241,7 @@ public class Cliente extends javax.swing.JInternalFrame {
     private void setarCampos() {
 
         int set = tbCliente.getSelectedRow();
+        txtIdCliente.setText(tbCliente.getModel().getValueAt(set, 0).toString());
         TxtNome.setText(tbCliente.getModel().getValueAt(set, 1).toString());
         TxtEmail.setText(tbCliente.getModel().getValueAt(set, 2).toString());
         txtNasc.setText(tbCliente.getModel().getValueAt(set, 3).toString());
@@ -219,6 +255,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         TxtCep.setText(tbCliente.getModel().getValueAt(set, 11).toString());
         TxtNumero.setText(tbCliente.getModel().getValueAt(set, 12).toString());
         cbUf.setSelectedItem(tbCliente.getModel().getValueAt(set, 13).toString());
+        btnCadastrarCli.setEnabled(false);
 
     }
 
@@ -367,6 +404,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         jLabel11.setText("* Campos Obrigatórios");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698873-icon-136-document-edit-32.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -635,6 +677,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         setarCampos();
     }//GEN-LAST:event_tbClienteMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        deletar();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

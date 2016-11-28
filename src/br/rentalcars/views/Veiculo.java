@@ -133,6 +133,8 @@ public class Veiculo extends javax.swing.JInternalFrame {
                     txtAnoFab.setText(null);
                     txtAnoModel.setText(null);
                     txtValorDia.setText(null);
+                    btnCadastrarVeiculo.setEnabled(true);
+                    
                 }
 
             }
@@ -142,6 +144,36 @@ public class Veiculo extends javax.swing.JInternalFrame {
         }
 
     }
+    
+      private void deletar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este cliente ?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if(opc == JOptionPane.YES_OPTION){
+            String sql = "DELETE FROM veiculos WHERE id=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtIdVeiculo.getText());
+                int deletado = pst.executeUpdate();
+                if (deletado > 0) {
+                    JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso");
+                    txtMontadora.setText(null);
+                    txtModelo.setText(null);
+                    txtPlaca.setText(null);
+                    txtCor.setText(null);
+                    txtAnoFab.setText(null);
+                    txtAnoModel.setText(null);
+                    txtValorDia.setText(null);
+                    btnCadastrarVeiculo.setEnabled(true);
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "erro ao tentar remover veiculo");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        
+    }
+
 
     private void consultarModelo() throws SQLException {
 
@@ -163,6 +195,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
     private void setarCampos() {
 
         int set = tbVeiculo.getSelectedRow();
+        txtIdVeiculo.setText(tbVeiculo.getModel().getValueAt(set,0).toString());
         txtMontadora.setText(tbVeiculo.getModel().getValueAt(set,1).toString());
         txtModelo.setText(tbVeiculo.getModel().getValueAt(set,2).toString());
         txtPlaca.setText(tbVeiculo.getModel().getValueAt(set,3).toString());
@@ -171,6 +204,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         txtAnoFab.setText(tbVeiculo.getModel().getValueAt(set,6).toString());
         txtAnoModel.setText(tbVeiculo.getModel().getValueAt(set,7).toString());
         txtValorDia.setText(tbVeiculo.getModel().getValueAt(set,8).toString());
+        btnCadastrarVeiculo.setEnabled(false);
 
     }
 
@@ -306,6 +340,11 @@ public class Veiculo extends javax.swing.JInternalFrame {
         btDelVeiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
         btDelVeiculo.setToolTipText("Excluir");
         btDelVeiculo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDelVeiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelVeiculoActionPerformed(evt);
+            }
+        });
 
         btLimparCamposVeiculos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btLimparCamposVeiculos.setToolTipText("Limpar Campos");
@@ -518,6 +557,11 @@ public class Veiculo extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         setarCampos();
     }//GEN-LAST:event_tbVeiculoMouseClicked
+
+    private void btDelVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelVeiculoActionPerformed
+        // TODO add your handling code here:
+        deletar();
+    }//GEN-LAST:event_btDelVeiculoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
