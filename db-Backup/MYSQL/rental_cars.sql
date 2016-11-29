@@ -53,8 +53,9 @@ quantidade_dias int(3) not null,
 data_locacao  timestamp not null default CURRENT_TIMESTAMP,
 forma_pagamento varchar(10) not null,
 parcelas int(2) not null,
+valor_dia decimal(6,2) not null,
 valor_total decimal(6,2) not null,
-status varchar() not null,
+situacao varchar(20) not null,
 primary key (id),
 constraint fk_veiculos_func foreign key (veiculo_id) references veiculos (id),
 constraint fk_clientes_func foreign key (cliente_id) references clientes (id)
@@ -76,7 +77,4 @@ INSERT INTO veiculos (montadora,modelo,placa,combustivel,cor,ano_fab,ano_model,v
 INSERT INTO clientes (nome,email,nasc,sexo,cpf,rg,celular,fone,rua,cidade,cep,n,uf) VALUES ('Aleph Junio','alephjunio@teste.com','12/12/1991','M','444.636.445.99','444.636.445.9','11956894512','1146894512','Taubaté','Itaquá','08577958','354','SP');
 INSERT INTO clientes (nome,email,nasc,sexo,cpf,rg,celular,fone,rua,cidade,cep,n,uf) VALUES ('Fabio Araujo','Fabio@teste.com','12/12/1991','M','444.636.445.99','444.636.445.9','11956894512','1146894512','Taubaté','Itaquá','08577958','354','SP');
 
-
-INSERT INTO locacoes (veiculo_id,cliente_id,usuario_id,quantidade_dias,data_locacao,forma_pagamento,parcelas,valor_total,status) VALUES (1,1,2,3,'24/03/2016','Dinheiro',1,250.00,'Reservado');  	
-
-INSERT INTO locacoes (veiculo_id,cliente_id,usuario_id,quantidade_dias,data_locacao,forma_pagamento,parcelas,valor_total,status) VALUES (2,2,2,2,'22/06/2016','Crtão de Credito',4,250.00,'Alocação Confirmada');
+INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_total,situacao) VALUES (1,1,3,'Dinheiro',1,250.00,'Reservado');  	
