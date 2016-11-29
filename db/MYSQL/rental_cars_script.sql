@@ -1,8 +1,10 @@
-
+-- CRIANDO BASE DE DADOS 
 CREATE SCHEMA rental_cars;
 
+-- UTILIZANDO BASE DE DADOS
 USE rental_cars;
 
+-- CRIANDO TABELA USUARIOS
 
 CREATE TABLE users(
 	id int unsigned not null primary key auto_increment,
@@ -10,9 +12,11 @@ CREATE TABLE users(
 	password varchar(45) not null,
 	nome  varchar(45) not null,
 	email varchar(45) not null ,
-	perfil varchar(45) not null,
+	perfil varchar(45) not null
 
 );
+
+-- CRIANDO TABELA DE VEICULOS
 
 CREATE TABLE veiculos(
 	id int unsigned not null primary key auto_increment,
@@ -26,6 +30,8 @@ CREATE TABLE veiculos(
 	valor_dia DECIMAL(6,2) not null
 );
 
+
+-- CRIANDO TABELA DE CLIENTES
 
 CREATE TABLE clientes(
 	id int unsigned not null primary key auto_increment,
@@ -44,6 +50,7 @@ CREATE TABLE clientes(
 	uf    varchar(2) not null
 );
 
+-- CRIANDO TABELA DE LOCAÇÕES COM REFERENCIAS DAS TABELAS CLIENTES E VEICULOS
 
 CREATE TABLE locacoes (
 id int(3)  unsigned not null auto_increment,
@@ -65,18 +72,23 @@ constraint fk_clientes_func foreign key (cliente_id) references clientes (id)
 
 
 
-
+-- INSERINDO DADOS NA TABELA USUARIOS
 
 INSERT INTO users (username,password,nome,email,perfil) VALUES ('admin','admin','Administrador','admin@admin.com','admin');
 INSERT INTO users (username,password,nome,email,perfil) VALUES ('Aleph','123456','Aleph Junio','Aleph@admin.com','user');
 
+-- INSERINDO DADOS NA TABELA VEICULOS
 
 INSERT INTO veiculos (montadora,modelo,placa,combustivel,cor,ano_fab,ano_model,valor_dia) VALUES ('Fiat','Uno','HHH-3356','Flex','Branco','2016','2017',350.00);
 INSERT INTO veiculos (montadora,modelo,placa,combustivel,cor,ano_fab,ano_model,valor_dia) VALUES ('Fiat','Palio','JFR-3356','Gasolina','Amarelo','2014','2015',250.00);
 
+-- INSERINDO DADOS NA TABELA CLIENTES
 
 INSERT INTO clientes (nome,email,nasc,sexo,cpf,rg,celular,fone,rua,cidade,cep,n,uf) VALUES ('Aleph Junio','alephjunio@teste.com','12/12/1991','M','444.636.445.99','444.636.445.9','11956894512','1146894512','Taubaté','Itaquá','08577958','354','SP');
 INSERT INTO clientes (nome,email,nasc,sexo,cpf,rg,celular,fone,rua,cidade,cep,n,uf) VALUES ('Fabio Araujo','Fabio@teste.com','12/12/1991','M','444.636.445.99','444.636.445.9','11956894512','1146894512','Taubaté','Itaquá','08577958','354','SP');
+
+
+-- INSERINDO DADOS NA TABELA LOCAÇÕES
 
 INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_total,valor_parcela,situacao) VALUES (1,1,3,'Dinheiro',1,250.00,750.00,750.00,'Reservado');  	
 INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_total,valor_parcela,situacao) VALUES (1,1,3,'Dinheiro',1,250.00,750.00,750.00,'Reservado');  
