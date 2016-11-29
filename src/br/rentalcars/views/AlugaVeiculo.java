@@ -26,7 +26,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     PreparedStatement pst = null;
     ResultSet result = null;
     String tipo;
-    double total, valorDia, valorParcela;
+    double total, valorDia;
 
     /**
      * Creates new form AlugaVeiculo
@@ -42,7 +42,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     // metodo abaixa realiza a cadastro de uma nova  alocação
     private void alugar() {
 
-        String sql = "INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_parcela,valor_total,situacao) VALUES (?,?,?,?,?,?,?,?);  ";
+        String sql = "INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_total,valor_parcela,situacao) VALUES (?,?,?,?,?,?,?,?,?);  ";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txtIdVeiculo.getText());
@@ -50,21 +50,21 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
             pst.setString(3, txtDiasContratado.getText());
             pst.setString(4, cbFormaPag.getSelectedItem().toString());
             pst.setString(5, cbVezesPag.getSelectedItem().toString());
-            pst.setString(6, txtValorDia.getText());
-            pst.setString(7, txtValorParcelas.getText());
-            pst.setString(8, txtValorTotal.getText());
-            pst.setString(9, cbStatus.getSelectedItem().toString());
+            pst.setString(6, txtValorDia.getText().replace(",", "."));
             // Linha Abaixo Captura e converte o valor para double para  realização do calculo 
             int quantidade = Integer.parseInt(txtDiasContratado.getText());
             // Linha abaixo converte o valor diario para double 
-            valorDia = Double.parseDouble(txtValorDia.getText());
-            // Linha abaixo converte o valor da parcela para double 
-            valorParcela = Double.parseDouble(txtValorParcelas.getText());
-            valorParcela /= quantidade;
-            pst.setString(7, Double.toString((double) valorParcela));
+            valorDia = Double.parseDouble(txtValorDia.getText().replace(",", "."));
+
             // linha abaixo realiza o calculo do valor total
             total = valorDia * quantidade;
-            pst.setString(8, Double.toString((double) total));
+            pst.setString(7, Double.toString((double) total));
+
+            // Linha abaixo converte o valor da parcela para double 
+            double quatidadeVezes = Double.parseDouble(cbVezesPag.getSelectedItem().toString());
+            double valorParcela = total / quatidadeVezes;
+            pst.setString(8, Double.toString((double) valorParcela));
+
             pst.setString(9, cbStatus.getSelectedItem().toString());
             if ((txtIdVeiculo.getText().isEmpty()) || (txtIdCliente.getText().isEmpty()) || (txtDiasContratado.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
@@ -78,6 +78,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                     txtDiasContratado.setText(null);
                     txtValorDia.setText(null);
                     txtValorParcelas.setText(null);
+                    txtValorTotal.setText(null);
                 }
 
             }
@@ -88,33 +89,34 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     }
 
     // metodo abaixa realiza a alteração de alocação ja cadastrada apos buscar-la
-    private void editar() {
+    private void alterar() {
 
-        String sql = "UPDATE locacoes SET veiculo_id=?,cliente_id=?,quantidade_dias=?,forma_pagamento=?,parcelas=?,valor_dia=?,valor_parcela=?,situacao=? WHERE id=?;";
+        String sql = "UPDATE locacoes SET quantidade_dias=?,forma_pagamento=?,parcelas=?,valor_dia=?,valor_total=?,valor_parcela=?,situacao=? WHERE id=?;";
 
         try {
             pst = conn.prepareStatement(sql);
-            pst.setString(1, txtIdVeiculo.getText());
-            pst.setString(2, txtIdCliente.getText());
-            pst.setString(3, txtDiasContratado.getText());
-            pst.setString(4, cbFormaPag.getSelectedItem().toString());
-            pst.setString(5, cbVezesPag.getSelectedItem().toString());
-            pst.setString(6, txtValorDia.getText());
-            pst.setString(7, txtValorParcelas.getText());
-            pst.setString(8, txtValorTotal.getText());
-            pst.setString(9, cbStatus.getSelectedItem().toString());
-            // Linha Abaixo Captura e converte o valor para double para  realização do calculo 
+            pst.setString(1, txtDiasContratado.getText());
+            pst.setString(2, cbFormaPag.getSelectedItem().toString());
+            pst.setString(3, cbVezesPag.getSelectedItem().toString());
+            pst.setString(4, txtValorDia.getText().replace(",", "."));
+             // Linha Abaixo Captura e converte o valor para double para  realização do calculo 
             int quantidade = Integer.parseInt(txtDiasContratado.getText());
             // Linha abaixo converte o valor diario para double 
             valorDia = Double.parseDouble(txtValorDia.getText());
-            // Linha abaixo converte o valor da parcela para double 
-            valorParcela = Double.parseDouble(txtValorParcelas.getText());
-            valorParcela /= quantidade;
-            pst.setString(7, Double.toString((double) valorParcela));
+
             // linha abaixo realiza o calculo do valor total
             total = valorDia * quantidade;
-            pst.setString(8, Double.toString((double) total));
-            pst.setString(9, cbStatus.getSelectedItem().toString());
+            pst.setString(5, Double.toString((double) total));
+
+            // Linha abaixo converte o valor da parcela para double 
+            double quatidadeVezes = Double.parseDouble(cbVezesPag.getSelectedItem().toString());
+            double valorParcela = total / quatidadeVezes;
+            pst.setString(6, Double.toString((double) valorParcela));
+            
+            
+            pst.setString(7, cbStatus.getSelectedItem().toString());
+            pst.setString(8, txtIdNota.getText());
+            
             if ((txtIdVeiculo.getText().isEmpty()) || (txtIdCliente.getText().isEmpty()) || (txtDiasContratado.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
 
@@ -127,6 +129,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                     txtDiasContratado.setText(null);
                     txtValorDia.setText(null);
                     txtValorParcelas.setText(null);
+                    txtValorTotal.setText(null);
                     tbVeiculos.setVisible(true);
                     txtPesqVeiculo.setEnabled(true);
                     tbClientes.setVisible(true);
@@ -139,6 +142,67 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
 
+        }
+    }
+
+    
+    
+           private void deletar(){
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esta locação ?", "Atenção", JOptionPane.YES_NO_OPTION);
+        if(opc == JOptionPane.YES_OPTION){
+            String sql = "DELETE FROM locacoes WHERE id=?";
+            try {
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, txtIdNota.getText());
+                int deletado = pst.executeUpdate();
+                if (deletado > 0) {
+                    JOptionPane.showMessageDialog(null, "Reserva ou Alocação removida  com sucesso");
+                    txtIdVeiculo.setText(null);
+                    txtIdCliente.setText(null);
+                    txtDiasContratado.setText(null);
+                    txtValorDia.setText(null);
+                    txtValorParcelas.setText(null);
+                    txtValorTotal.setText(null);
+                    tbVeiculos.setVisible(true);
+                    txtPesqVeiculo.setEnabled(true);
+                    tbClientes.setVisible(true);
+                    txtPesqCliente.setEnabled(true);
+                    btnAlugar.setEnabled(true);
+                } else {
+                    
+                    JOptionPane.showMessageDialog(null, "erro ao tentar remover usuário");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
+        }
+        
+    
+        
+        
+        
+        
+    }
+    
+    
+    private void limpar() {
+
+        int opc = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja Limpar Todos os Campos ?", "Atenção", JOptionPane.YES_NO_OPTION);
+
+        if (opc == JOptionPane.YES_OPTION) {
+            txtIdVeiculo.setText(null);
+            txtIdCliente.setText(null);
+            txtDiasContratado.setText(null);
+            txtValorDia.setText(null);
+            txtValorParcelas.setText(null);
+            txtValorTotal.setText(null);
+            txtIdNota.setText(null);
+            txtDataNota.setText(null);
+            tbVeiculos.setVisible(true);
+            txtPesqVeiculo.setEnabled(true);
+            tbClientes.setVisible(true);
+            txtPesqCliente.setEnabled(true);
+            btnAlugar.setEnabled(true);
         }
     }
 
@@ -254,7 +318,6 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         tbVeiculos = new javax.swing.JTable();
         txtIdVeiculo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        btAluga = new javax.swing.JButton();
         btDelAluguel = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbClientes = new javax.swing.JTable();
@@ -276,7 +339,6 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         cbStatus = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        btPrint = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         txtValorDia = new javax.swing.JTextField();
         btBucarLocacao = new javax.swing.JButton();
@@ -284,6 +346,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         txtValorParcelas = new javax.swing.JTextField();
+        btnEditar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -350,18 +413,14 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Pequisar Veiculo Por Fabricante");
 
-        btAluga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698873-icon-136-document-edit-32.png"))); // NOI18N
-        btAluga.setToolTipText("Editar");
-        btAluga.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btAluga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAlugaActionPerformed(evt);
-            }
-        });
-
         btDelAluguel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
         btDelAluguel.setToolTipText("Excluir");
         btDelAluguel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDelAluguel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelAluguelActionPerformed(evt);
+            }
+        });
 
         tbClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -417,6 +476,11 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         btDelAluguel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698908-icon-27-trash-can-32.png"))); // NOI18N
         btDelAluguel1.setToolTipText("Limpar");
         btDelAluguel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btDelAluguel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDelAluguel1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -477,10 +541,6 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         jLabel10.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
         jLabel10.setText("* Campos Obrigatórios");
 
-        btPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698852-icon-124-printer-text-32.png"))); // NOI18N
-        btPrint.setToolTipText("Imprimir nota");
-        btPrint.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         jLabel12.setText("Valor Dia");
 
         txtValorDia.setEditable(false);
@@ -504,6 +564,15 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
 
         txtValorParcelas.setEditable(false);
         txtValorParcelas.setBackground(new java.awt.Color(204, 204, 204));
+
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/699302-icon-32-clipboard-edit-32.png"))); // NOI18N
+        btnEditar.setToolTipText("Editar Locação");
+        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -554,7 +623,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(cbVezesPag, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 7, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -577,15 +646,13 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                         .addGap(23, 23, 23)
                         .addComponent(btnAlugar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btAluga, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btDelAluguel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btBucarLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btDelAluguel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btDelAluguel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -651,11 +718,10 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAlugar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btAluga)
                             .addComponent(btDelAluguel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btDelAluguel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btBucarLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btBucarLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -710,19 +776,28 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         buscar();
     }//GEN-LAST:event_btBucarLocacaoActionPerformed
 
-    private void btAlugaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlugaActionPerformed
+    private void btDelAluguel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelAluguel1ActionPerformed
         // TODO add your handling code here:
-        editar();
-    }//GEN-LAST:event_btAlugaActionPerformed
+        limpar();
+    }//GEN-LAST:event_btDelAluguel1ActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        alterar();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btDelAluguelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btDelAluguelActionPerformed
+        // TODO add your handling code here:
+        deletar();
+    }//GEN-LAST:event_btDelAluguelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAluga;
     private javax.swing.JButton btBucarLocacao;
     private javax.swing.JButton btDelAluguel;
     private javax.swing.JButton btDelAluguel1;
-    private javax.swing.JButton btPrint;
     private javax.swing.JButton btnAlugar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbFormaPag;
     private javax.swing.JComboBox<String> cbStatus;

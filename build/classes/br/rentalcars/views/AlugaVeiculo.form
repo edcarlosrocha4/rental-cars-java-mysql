@@ -103,7 +103,7 @@
                                   <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="cbVezesPag" alignment="0" min="-2" pref="55" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -132,16 +132,14 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Component id="btnAlugar" min="-2" pref="60" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btAluga" min="-2" pref="60" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="btnEditar" min="-2" pref="60" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btDelAluguel" min="-2" pref="60" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btBucarLocacao" min="-2" pref="60" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btDelAluguel1" min="-2" pref="60" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btPrint" min="-2" pref="60" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -223,11 +221,10 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="btnAlugar" alignment="1" min="-2" pref="44" max="-2" attributes="0"/>
-                          <Component id="btAluga" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="btDelAluguel" alignment="0" min="-2" pref="44" max="-2" attributes="0"/>
                           <Component id="btDelAluguel1" min="-2" pref="44" max="-2" attributes="0"/>
-                          <Component id="btPrint" min="-2" pref="44" max="-2" attributes="0"/>
                           <Component id="btBucarLocacao" min="-2" pref="44" max="-2" attributes="0"/>
+                          <Component id="btnEditar" min="-2" pref="44" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -311,20 +308,6 @@
         <Property name="text" type="java.lang.String" value="Pequisar Veiculo Por Fabricante"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btAluga">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/rentalcars/icons/698873-icon-136-document-edit-32.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Editar"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAlugaActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="btDelAluguel">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -335,6 +318,9 @@
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btDelAluguelActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -438,6 +424,9 @@
           <Color id="Cursor em Forma de M&#xe3;o"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btDelAluguel1ActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
@@ -553,17 +542,6 @@
         <Property name="text" type="java.lang.String" value="* Campos Obrigat&#xf3;rios"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btPrint">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/br/rentalcars/icons/698852-icon-124-printer-text-32.png"/>
-        </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Imprimir nota"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor em Forma de M&#xe3;o"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
         <Property name="text" type="java.lang.String" value="Valor Dia"/>
@@ -616,6 +594,20 @@
           <Color blue="cc" green="cc" red="cc" type="rgb"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEditar">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/br/rentalcars/icons/699302-icon-32-clipboard-edit-32.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Editar Loca&#xe7;&#xe3;o"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor em Forma de M&#xe3;o"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

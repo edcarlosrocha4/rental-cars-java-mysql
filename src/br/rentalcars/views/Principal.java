@@ -43,8 +43,6 @@ public class Principal extends javax.swing.JFrame {
         MenCadUsuario = new javax.swing.JMenuItem();
         MenCadAlugar = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
-        MenTodasLocacoes = new javax.swing.JMenu();
-        MenTodasNotas = new javax.swing.JMenuItem();
         MenBtnExit = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
 
@@ -68,7 +66,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jdpDesktopLayout.setVerticalGroup(
             jdpDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
+            .addGap(0, 491, Short.MAX_VALUE)
         );
 
         lbUsuario.setFont(new java.awt.Font("DejaVu Sans", 1, 12)); // NOI18N
@@ -129,18 +127,6 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(MenCadAlugar);
 
-        MenTodasLocacoes.setText("RELÁTORIOS");
-
-        MenTodasNotas.setText("NOTAS FISCAIS");
-        MenTodasNotas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MenTodasNotasActionPerformed(evt);
-            }
-        });
-        MenTodasLocacoes.add(MenTodasNotas);
-
-        jMenuBar1.add(MenTodasLocacoes);
-
         MenBtnExit.setText("OPÇÕES");
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
@@ -167,9 +153,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbUsuario)
                     .addComponent(lbData))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE)
+                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -183,7 +169,7 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(lbData))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addComponent(jdpDesktop, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -222,13 +208,6 @@ public class Principal extends javax.swing.JFrame {
         jdpDesktop.add(TelaAlugaVeiculo);
         TelaAlugaVeiculo.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void MenTodasNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenTodasNotasActionPerformed
-        // TODO add your handling code here:
-        TodasNotas TelaTodasNotas = new TodasNotas();
-        jdpDesktop.add(TelaTodasNotas);
-        TelaTodasNotas.setVisible(true);
-    }//GEN-LAST:event_MenTodasNotasActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
@@ -293,8 +272,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenCadCliente;
     public static javax.swing.JMenuItem MenCadUsuario;
     private javax.swing.JMenuItem MenCadVeiculo;
-    private javax.swing.JMenu MenTodasLocacoes;
-    public static javax.swing.JMenuItem MenTodasNotas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem6;

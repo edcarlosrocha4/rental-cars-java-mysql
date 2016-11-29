@@ -44,6 +44,7 @@ public class Login extends javax.swing.JFrame {
                 if (perfil.equals("admin")) {
                     // instanciar um objeto com a tela principal e colocar para abrir
                     Principal.MenCadUsuario.setEnabled(true);
+                    
                 }
                 // fechando conexção com o banco de dados
                 conn.close();
