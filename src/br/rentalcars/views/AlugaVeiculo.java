@@ -26,7 +26,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     PreparedStatement pst = null;
     ResultSet result = null;
     String tipo;
-    double total, valorDia;
+    double total, valorDia, valorParcela;
 
     /**
      * Creates new form AlugaVeiculo
@@ -39,9 +39,10 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         }
     }
 
+    // metodo abaixa realiza a cadastro de uma nova  alocação
     private void alugar() {
 
-        String sql = "INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_total,status) VALUES (?,?,?,?,?,?,?);  ";
+        String sql = "INSERT INTO locacoes (veiculo_id,cliente_id,quantidade_dias,forma_pagamento,parcelas,valor_dia,valor_parcela,valor_total,situacao) VALUES (?,?,?,?,?,?,?,?);  ";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1, txtIdVeiculo.getText());
@@ -50,14 +51,21 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
             pst.setString(4, cbFormaPag.getSelectedItem().toString());
             pst.setString(5, cbVezesPag.getSelectedItem().toString());
             pst.setString(6, txtValorDia.getText());
+            pst.setString(7, txtValorParcelas.getText());
+            pst.setString(8, txtValorTotal.getText());
+            pst.setString(9, cbStatus.getSelectedItem().toString());
             // Linha Abaixo Captura e converte o valor para double para  realização do calculo 
             int quantidade = Integer.parseInt(txtDiasContratado.getText());
             // Linha abaixo converte o valor diario para double 
             valorDia = Double.parseDouble(txtValorDia.getText());
+            // Linha abaixo converte o valor da parcela para double 
+            valorParcela = Double.parseDouble(txtValorParcelas.getText());
+            valorParcela /= quantidade;
+            pst.setString(7, Double.toString((double) valorParcela));
             // linha abaixo realiza o calculo do valor total
             total = valorDia * quantidade;
-            pst.setString(7, Double.toString((double) total));
-            pst.setString(8, cbStatus.getSelectedItem().toString());
+            pst.setString(8, Double.toString((double) total));
+            pst.setString(9, cbStatus.getSelectedItem().toString());
             if ((txtIdVeiculo.getText().isEmpty()) || (txtIdCliente.getText().isEmpty()) || (txtDiasContratado.getText().isEmpty())) {
                 JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
 
@@ -69,6 +77,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                     txtIdCliente.setText(null);
                     txtDiasContratado.setText(null);
                     txtValorDia.setText(null);
+                    txtValorParcelas.setText(null);
                 }
 
             }
@@ -78,6 +87,62 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         }
     }
 
+    // metodo abaixa realiza a alteração de alocação ja cadastrada apos buscar-la
+    private void editar() {
+
+        String sql = "UPDATE locacoes SET veiculo_id=?,cliente_id=?,quantidade_dias=?,forma_pagamento=?,parcelas=?,valor_dia=?,valor_parcela=?,situacao=? WHERE id=?;";
+
+        try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, txtIdVeiculo.getText());
+            pst.setString(2, txtIdCliente.getText());
+            pst.setString(3, txtDiasContratado.getText());
+            pst.setString(4, cbFormaPag.getSelectedItem().toString());
+            pst.setString(5, cbVezesPag.getSelectedItem().toString());
+            pst.setString(6, txtValorDia.getText());
+            pst.setString(7, txtValorParcelas.getText());
+            pst.setString(8, txtValorTotal.getText());
+            pst.setString(9, cbStatus.getSelectedItem().toString());
+            // Linha Abaixo Captura e converte o valor para double para  realização do calculo 
+            int quantidade = Integer.parseInt(txtDiasContratado.getText());
+            // Linha abaixo converte o valor diario para double 
+            valorDia = Double.parseDouble(txtValorDia.getText());
+            // Linha abaixo converte o valor da parcela para double 
+            valorParcela = Double.parseDouble(txtValorParcelas.getText());
+            valorParcela /= quantidade;
+            pst.setString(7, Double.toString((double) valorParcela));
+            // linha abaixo realiza o calculo do valor total
+            total = valorDia * quantidade;
+            pst.setString(8, Double.toString((double) total));
+            pst.setString(9, cbStatus.getSelectedItem().toString());
+            if ((txtIdVeiculo.getText().isEmpty()) || (txtIdCliente.getText().isEmpty()) || (txtDiasContratado.getText().isEmpty())) {
+                JOptionPane.showMessageDialog(null, "Preencha Todos os Campos Obrigatórios");
+
+            } else {
+                int add = pst.executeUpdate();
+                if (add > 0) {
+                    JOptionPane.showMessageDialog(null, "Reserva ou Alocação Atualizada com sucesso");
+                    txtIdVeiculo.setText(null);
+                    txtIdCliente.setText(null);
+                    txtDiasContratado.setText(null);
+                    txtValorDia.setText(null);
+                    txtValorParcelas.setText(null);
+                    tbVeiculos.setVisible(true);
+                    txtPesqVeiculo.setEnabled(true);
+                    tbClientes.setVisible(true);
+                    txtPesqCliente.setEnabled(true);
+                    btnAlugar.setEnabled(true);
+
+                }
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }
+
+    // metodo abaixao realiza a busca pela montadora do veiculo 
     private void consultarVeiculo() throws SQLException {
 
         String sql = "SELECT * FROM veiculos WHERE montadora LIKE ?;";
@@ -94,6 +159,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         }
 
     }
+    // metodo abaixao realiza a busca de cliente pelo nome
 
     private void consultarCliente() throws SQLException {
 
@@ -111,6 +177,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         }
 
     }
+    // metodo abaixao realiza a inserção de id para fazer vinculação de veiculo com alocação
 
     private void setarCampoVeiculo() {
 
@@ -120,6 +187,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
 
     }
 
+    // metodo abaixao realiza a inserção de id para fazer vinculação de cliente com alocação
     private void setarCampoCliente() {
 
         int set = tbClientes.getSelectedRow();
@@ -127,6 +195,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
 
     }
 
+    // metodo abaixao realiza a busca da alocação ja cadastrada
     private void buscar() {
         String n = JOptionPane.showInputDialog("Numero de Identificação da Alocação?");
         String sql = "SELECT * FROM locacoes WHERE id=" + n;
@@ -141,8 +210,10 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                 txtDataNota.setText(result.getString(5));
                 cbFormaPag.setSelectedItem(result.getString(6));
                 cbVezesPag.setSelectedItem(result.getString(7));
-                txtValorTotal.setText(result.getString(8));
-                cbStatus.setSelectedItem(result.getString(9));
+                txtValorDia.setText(result.getString(8));
+                txtValorParcelas.setText(result.getString(9));
+                txtValorTotal.setText(result.getString(10));
+                cbStatus.setSelectedItem(result.getString(11));
                 tbVeiculos.setVisible(false);
                 txtPesqVeiculo.setEnabled(false);
                 tbClientes.setVisible(false);
@@ -156,10 +227,10 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
             }
         } catch (com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException e) {
             JOptionPane.showMessageDialog(null, "Locação Invalida");
-            
-        }catch(Exception e2){
-            JOptionPane.showMessageDialog(null,e2);
-            
+
+        } catch (Exception e2) {
+            JOptionPane.showMessageDialog(null, e2);
+
         }
 
     }
@@ -211,7 +282,11 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         btBucarLocacao = new javax.swing.JButton();
         txtValorTotal = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        txtValorParcelas = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         setTitle("Registrar Locação Veiculo");
         setPreferredSize(new java.awt.Dimension(905, 495));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -278,6 +353,11 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         btAluga.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698873-icon-136-document-edit-32.png"))); // NOI18N
         btAluga.setToolTipText("Editar");
         btAluga.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btAluga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAlugaActionPerformed(evt);
+            }
+        });
 
         btDelAluguel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/rentalcars/icons/698910-icon-79-document-cancel-32.png"))); // NOI18N
         btDelAluguel.setToolTipText("Excluir");
@@ -420,6 +500,11 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Valor Total");
 
+        jLabel15.setText("Valor da Parcela");
+
+        txtValorParcelas.setEditable(false);
+        txtValorParcelas.setBackground(new java.awt.Color(204, 204, 204));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -476,6 +561,10 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtValorTotal)
                             .addComponent(jLabel14))
+                        .addGap(37, 37, 37)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtValorParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
@@ -536,12 +625,16 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbVezesPag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel15))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtValorParcelas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 3, Short.MAX_VALUE))
+                        .addGap(0, 6, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(jLabel4)
@@ -617,6 +710,11 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
         buscar();
     }//GEN-LAST:event_btBucarLocacaoActionPerformed
 
+    private void btAlugaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlugaActionPerformed
+        // TODO add your handling code here:
+        editar();
+    }//GEN-LAST:event_btAlugaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAluga;
@@ -635,6 +733,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -656,6 +755,7 @@ public class AlugaVeiculo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPesqCliente;
     private javax.swing.JTextField txtPesqVeiculo;
     private javax.swing.JTextField txtValorDia;
+    private javax.swing.JTextField txtValorParcelas;
     private javax.swing.JTextField txtValorTotal;
     // End of variables declaration//GEN-END:variables
 }
