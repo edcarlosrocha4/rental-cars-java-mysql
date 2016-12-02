@@ -134,6 +134,7 @@ public class Usuario extends javax.swing.JInternalFrame {
                     txtLoginUsuario.setText(null);
                     txtPasswordUsuario.setText(null);
                     txtIdUsuario.setText(null);
+                    btnAddUsuario.setEnabled(true);
                 }
 
             }

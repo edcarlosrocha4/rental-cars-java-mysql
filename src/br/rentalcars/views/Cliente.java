@@ -87,6 +87,7 @@ public class Cliente extends javax.swing.JInternalFrame {
             TxtCidade.setText(null);
             TxtCep.setText(null);
             TxtNumero.setText(null);
+            btnCadastrarCli.setEnabled(true);
         }
 
     }
@@ -128,6 +129,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                     TxtCidade.setText(null);
                     TxtCep.setText(null);
                     TxtNumero.setText(null);
+                    btnCadastrarCli.setEnabled(true);
                 }
 
             }
