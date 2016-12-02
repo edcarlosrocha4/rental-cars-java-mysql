@@ -38,7 +38,7 @@ CREATE TABLE clientes(
 	nome  varchar(255) not null, -----<<<<------- NOME COMPLETO DO CLIENTE
 	email varchar(45) not null, -----<<<<------- NUMERO DE CPF - (CADASTRO PESSOA FISICA) DO CLIENTE
 	nasc  varchar(10) not null, ----<<<<------- NUEMRO DE RG ( REGISTRO GERAL) DO CLIENTE
-	sexo  char(1) not null, -----<<<<------- DATA DE NASCIMENTO DO CLIENTE
+	sexo  varchar(9) not null, -----<<<<------- DATA DE NASCIMENTO DO CLIENTE
 	cpf   varchar(15) not null, -----<<<<------- EMAIL DO CLIENTE
 	rg   varchar(15) not null,  -----<<<<------- PSEXO DO CLIENTE
 	celular   varchar(12) not null,   -----<<<<------- TELEFONE CELULAR DO CLIENTE
