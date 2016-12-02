@@ -227,7 +227,7 @@ end;
 ----------------------------------------------------------------------------------
 
 CREATE OR REPLACE PROCEDURE "USERS" (
-  vID     INTEGER,
+  vID     NUMBER,
   vNOME   VARCHAR2,
   vSENHA  VARCHAR2,
   vEMAIL  VARCHAR2,
@@ -247,7 +247,11 @@ BEGIN
   IF(vOPR = 'D')THEN
     DELETE FROM users WHERE id = vID;
   ELSE
+  IF(vOPR = 'S')THEN
+    SELECT * FROM users WHERE id = vID;
+  ELSE
     RAISE vEXCEPTION;
+  END IF;
   END IF;
   END IF;
   END IF;
@@ -261,3 +265,52 @@ END USERS;
 ---- CHAMANDO Procedure
 
 EXEC USERS(1, 'admin', 'admin', 'admin','admin@admin', 'admin', 'I');
+
+-------------------------------------------------------------------------------------
+
+
+
+CREATE OR REPLACE PROCEDURE "VEICULOS" (
+  vID     NUMBER,
+  vMARCA   VARCHAR2,
+  vMODELO  VARCHAR2,
+  vPLACA  VARCHAR2,
+  vCOR VARCHAR2,
+  vCOMBUSTILVEL VARCHAR2,
+  vANO_FAB VARCHAR2,
+  vANO_MODEL VARCHAR2,
+  vVALOR_DIA VARCHAR2,
+  vOPR        CHAR
+)
+
+IS
+  vEXCEPTION EXCEPTION;
+BEGIN
+  IF (vOPR = 'I') THEN
+    INSERT INTO veiculos (id,marca,modelo,placa,cor,combustivel,ano_fab,ano_model,valor_dia) VALUES (vID,vMARCA,vMODELO,vPLACA,vCOR,vCOMBUSTILVEL,vANO_FAB,
+vANO_MODEL,vVALOR_DIA);
+  ELSE
+  IF(vOPR = 'A') THEN
+    UPDATE veiculos SET modelo = vMODELO WHERE id = vID;
+  ELSE
+  IF(vOPR = 'D')THEN
+    DELETE FROM veiculos WHERE id = vID;
+  ELSE
+  IF(vOPR = 'S')THEN
+    SELECT * FROM veiculos WHERE id = vID;
+  ELSE
+    RAISE vEXCEPTION;
+  END IF;
+  END IF;
+  END IF;
+  END IF;
+  EXCEPTION
+    WHEN vEXCEPTION THEN
+      RAISE_APPLICATION_ERROR(-20999,'ATENÇÃO! Operação diferente de I, D, A.', FALSE);
+END USERS;
+
+
+
+---- CHAMANDO Procedure
+
+EXEC VEICULOS(1,'wolkswagen','Gol G3','AAA-1234','azul','Gasolina',2012,2013,300.00,'I');
